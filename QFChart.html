@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Map page</title>
+<link rel="stylesheet" href="css/myCSS.css">
+<script src='js/Chart.bundle.js'></script>
+</head>
+<body style="background-color: #FEE6B6">
+<ul>
+  <li><a href="index.html">Home</a></li>
+  <li><a href="remembered.html">Remembered</a></li>
+  <li><a href="grateful.html">Grateful</a></li>
+  <li><a href="change.html">Change</a></li>
+  <li><a href="trait.html">Significant trait</a></li>
+  <li><a href="QFChart.html">Quick fact charts</a></li>
+</ul>
+<div class="center">
+	<p class="mod-header">Quick Fact Charts</p>
+</div>
+<div id="canvas-holder" style="display: block; margin: 0 auto; width:50%">
+        <canvas id="sweetsavory" width="150" height="150"></canvas>
+        <canvas id="introextro" width="150" height="150"></canvas>
+        <canvas id="one" width="150" height="150"></canvas>
+        <canvas id="two" width="150" height="150"></canvas>
+        <canvas id="three" width="150" height="150"></canvas>
+</div>
+    <script>
+        var graph1 = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        53, 47
+                    ],
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                    ],
+                }, 
+                ],
+                labels: [
+                    "Sweet",
+                    "Savory",
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+        var graph2 = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        68, 32
+                    ],
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                    ],
+                }, 
+                ],
+                labels: [
+                    "Introverted",
+                    "Extroverted",
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+        var graph3 = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        78, 22
+                    ],
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                    ],
+                }, 
+                ],
+                labels: [
+                    "Apple",
+                    "Android",
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+        var graph4 = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        76, 24
+                    ],
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                    ],
+                }, 
+                ],
+                labels: [
+                    "Dogs",
+                    "Cats",
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+        var graph5 = {
+            type: 'pie',
+            data: {
+                datasets: [
+                {
+                    data: [
+                        66, 34
+                    ],
+                    backgroundColor: [
+                        "#F7464A",
+                        "#46BFBD",
+                    ],
+                }, 
+                ],
+                labels: [
+                    "Night Owl",
+                    "Early Bird",
+                ]
+            },
+            options: {
+                responsive: true
+            }
+        };
+    window.onload = function() {
+        var ctx1 = document.getElementById("sweetsavory").getContext("2d");
+        window.myPie = new Chart(ctx1, graph1);
+        var ctx2 = document.getElementById("introextro").getContext("2d");
+        window.myPie = new Chart(ctx2, graph2);
+        var ctx3 = document.getElementById("one").getContext("2d");
+        window.myPie = new Chart(ctx3, graph3);
+        var ctx4 = document.getElementById("two").getContext("2d");
+        window.myPie = new Chart(ctx4, graph4);
+        var ctx5 = document.getElementById("three").getContext("2d");
+        window.myPie = new Chart(ctx5, graph5);
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+	<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif|Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+	<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+	<script src="js/modernizr.js"></script> <!-- Modernizr -->
+  	
+	<title>Responsive Vertical Timeline</title>
+</head>
+<body>
+	<header>
+		<h1 id="name"></h1>
+	</header>
+
+	<script>
+		/*Array of headers of each value*/
+		var keys = ["id", "name", "age", "gender", "ethnicity", "major", "home", "gen_past", "Childhood", "career", "grateful", "trait", "change", "future", "sweet/savory", "introvert/extrovert", "apple/android", "dogs/cats", "early/night", "start", "submit", "network", "school"];
+
+		/*function to parse the url*/
+		function getUrlVars() {
+  		var vars = {};
+  		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+   		 vars[key] = value;
+ 		 });
+ 		 return vars;
+		}
+
+		/*Fetch all parameters from the url*/
+		var params = {};
+		for(var i = 0; i < 23; i++)
+		{
+			params[i] = getUrlVars()["var" + i].replace(/%20/gi, " ");
+			params[i] = params[i].replace(/%27/gi, "'");
+			params[i] = params[i].replace(/%22/gi, "\"");
+		}
+	</script>
+
+	<!-- Timeline layout -->
+	<section id="cd-timeline" class="cd-container">
+		<div class="cd-timeline-block">
+			<div class="cd-timeline-img cd-picture">
+					<img src="img/cd-info-icon.svg" alt="Picture">
+			</div> <!-- cd-timeline-img -->
+
+			<div class="cd-timeline-content">
+					<h2>Background</h2>
+					<p id="background"></p>
+					<!--<span class="cd-date">Jan 14</span> -->
+			</div> <!-- cd-timeline-content -->
+		</div> <!-- cd-timeline-block -->
+
+		<div class="cd-timeline-block">
+			<div class="cd-timeline-img cd-movie">
+				<img src="img/cd-black-icon-movie.svg" alt="Picture">
+			</div> <!-- cd-timeline-img -->
+
+			<div class="cd-timeline-content">
+				<h2>Past</h2>
+				<p id="childhood">What was your dream job when you were 5?</p>
+				<p id="grateful">What have you been most grateful for so far in life?</p>
+			</div> <!-- cd-timeline-content -->
+		</div> <!-- cd-timeline-block -->
+
+		<div class="cd-timeline-block">
+			<div class="cd-timeline-img cd-picture">
+				<img src="img/cd-black-icon-location.svg" alt="Movie">
+			</div> <!-- cd-timeline-img -->
+
+			<div class="cd-timeline-content">
+				<h2>Present</h2>
+				<p id="major">What is your major?</p>
+				<p id="career">What is your chosen career path?</p>
+				<p id="trait">What's the most important trait in a significant other?</p>
+			</div> <!-- cd-timeline-content -->
+		</div> <!-- cd-timeline-block -->
+
+		<div class="cd-timeline-block">
+			<div class="cd-timeline-img cd-location">
+				<img src="img/cd-icon-paint.svg" alt="Location">
+			</div> <!-- cd-timeline-img -->
+
+			<div class="cd-timeline-content">
+				<h2>Future</h2>
+				<p id="change">What's the one thing you want to change about yourself?</p>
+				<p id="future">How do you want to be remembered?</p>
+			</div> <!-- cd-timeline-content -->
+		</div> <!-- cd-timeline-block -->
+
+		<div class="cd-timeline-block">
+			<div class="cd-timeline-img cd-picture">
+					<img src="img/cd-info-icon.svg" alt="Picture">
+			</div> <!-- cd-timeline-img -->
+			<div class="cd-timeline-content">
+					<h2>Quick Facts</h2>
+					<p id="sweet/savory">sweet/savory: </p>
+					<p id="introvert/extrovert">introvert/extrovert: </p>
+					<p id="apple/android">apple/android: </p>
+					<p id="dogs/cats">dogs/cats: </p>
+					<p id="early/night">early/night: </p>
+				</div> 
+			</div><!-- cd-timeline-content -->
+		</div> <!-- cd-timeline-block -->
+	</section> <!-- cd-timeline -->
+
+	<script type="text/javascript">
+		document.getElementById("name").innerHTML += params[1];
+		document.getElementById("background").innerHTML += "Age: " + params[2] + "<br>" + "Gender: " + params[3] + "<br>" + "Ethnicity: " + params[4] + "<br>" + "Hometown: " + params[6];
+		document.getElementById("major").innerHTML += "<br>" + params[5];
+		document.getElementById("childhood").innerHTML += "<br>" + params[8];
+		document.getElementById("career").innerHTML += "<br>" + params[9];
+		document.getElementById("grateful").innerHTML += "<br>" + params[10];
+		document.getElementById("trait").innerHTML += "<br>" + params[11];
+		document.getElementById("change").innerHTML += "<br>" + params[12];
+		document.getElementById("future").innerHTML += "<br>" + params[13];
+		document.getElementById("sweet/savory").innerHTML += params[14];
+		document.getElementById("introvert/extrovert").innerHTML += params[15];
+		document.getElementById("apple/android").innerHTML += params[16];
+		document.getElementById("dogs/cats").innerHTML += params[17];
+		document.getElementById("early/night").innerHTML += params[18];
+
+	</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="js/main.js"></script> <!-- Resource jQuery -->
+</body>
+
+</html>

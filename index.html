@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Map page</title>
+<link rel="stylesheet" href="css/myCSS.css">
+<script src='js/Chart.bundle.js'></script>
+<script lang="javascript" src="js-xlsx-master/dist/xlsx.core.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+// When the user clicks on div, open the popup
+function pop(id) {
+    var popup = document.getElementById("span" + id);
+    popup.classList.toggle('show');
+}
+</script>
+</head>
+
+<body style="background-color: #FEE6B6">
+<ul>
+  <li><a href="index.html">Home</a></li>
+  <li><a href="remembered.html">Remembered</a></li>
+  <li><a href="grateful.html">Grateful</a></li>
+  <li><a href="change.html">Change</a></li>
+  <li><a href="trait.html">Significant trait</a></li>
+  <li><a href="QFChart.html">Quick fact charts</a></li>
+</ul>
+<img id="header" src="img/introhead.jpg" style="display: block; margin: 0 auto;"/>
+<div id="container">
+	<img id="png1" src="img/usc_map.jpg"/>
+</div>
+
+<script>
+/* set up XMLHttpRequest */
+var url = "http://localhost:8080/CoCa-Diversity-report.xlsx";
+var oReq = new XMLHttpRequest();
+oReq.open("GET", url, true);
+oReq.responseType = "arraybuffer";
+var json_string = "";
+var json_report;
+
+oReq.onload = function(e) {
+  var arraybuffer = oReq.response;
+
+  /* convert data to binary string */
+  var data = new Uint8Array(arraybuffer);
+  var arr = new Array();
+  for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+  var bstr = arr.join("");
+
+  /* Call XLSX */
+  var workbook = XLSX.read(bstr, {type:"binary"});
+
+  /* Start parsing XLSX */
+  var first_sheet_name = workbook.SheetNames[0];
+
+  workbook.SheetNames.forEach(function(first_sheet_name){
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[first_sheet_name]);
+            var json_object = JSON.stringify(XL_row_object);
+            json_string +=json_object;
+            //console.log(json_object);
+        })
+
+  json_report = JSON.parse(json_string);
+
+  /*Generate arrays of positions for each school*/
+  /*["viterbi", "dornsife", "davis", "cinematic arts", "marshall", "keck", "architecture/roski", "iovine and young", "annenberg", "rossier"];*/
+  var vite_pos = new Array();
+  for(var i = 0; i < 12; i++) {
+  	vite_pos[i] = new Array();
+    vite_pos[i][0] = new Array();
+    vite_pos[i][0][0] = 650 + (i*15);
+    vite_pos[i][0][1] = 270 - (i*8);
+    for(var j = 1; j <= 9; j++) {
+        vite_pos[i][j] = new Array();
+        vite_pos[i][j][0] = vite_pos[i][0][0] + (j*10);
+        vite_pos[i][j][1] = vite_pos[i][0][1] + (j*20);
+    }
+  }
+  var dornsci_pos = [];
+  for(var i = 0; i < 7; i++) {
+  	dornsci_pos[i] = new Array();
+    dornsci_pos[i][0] = new Array();
+    dornsci_pos[i][0][0] = 550 + (i*15);
+    dornsci_pos[i][0][1] = 325 - (i*8);
+    for(var j = 1; j <= 9; j++) {
+        dornsci_pos[i][j] = new Array();
+        dornsci_pos[i][j][0] = dornsci_pos[i][0][0] + (j*10);
+        dornsci_pos[i][j][1] = dornsci_pos[i][0][1] + (j*20);
+    }
+  }
+  var dornhu_pos = [];
+  for(var i = 0; i < 12; i++) {
+  	dornhu_pos[i] = new Array();
+    dornhu_pos[i][0] = new Array();
+    var m = 0;
+    if(i < 6) {
+    	dornhu_pos[i][0][0] = 575 - (i*15);
+    	dornhu_pos[i][0][1] = 650 + (i*8);
+    	m = 5;
+    }
+    else {
+    	dornhu_pos[i][0][0] = 515 - ((i-6)*15);
+    	dornhu_pos[i][0][1] = 760 + ((i-6)*8);
+    	m = 2;
+    }
+    for(var j = 1; j <= m; j++) {
+        dornhu_pos[i][j] = new Array();
+        dornhu_pos[i][j][0] = dornhu_pos[i][0][0] + (j*10);
+        dornhu_pos[i][j][1] = dornhu_pos[i][0][1] + (j*20);
+    }
+  }
+  var dav_pos = [];
+  for(var i = 0; i < 6; i++) {
+  	dav_pos[i] = new Array();
+    dav_pos[i][0] = new Array();
+    dav_pos[i][0][0] = 705 + (i*15);
+    dav_pos[i][0][1] = 150 - (i*8);
+    for(var j = 1; j <= 3; j++) {
+        dav_pos[i][j] = new Array();
+        dav_pos[i][j][0] = dav_pos[i][0][0] + (j*10);
+        dav_pos[i][j][1] = dav_pos[i][0][1] + (j*20);
+    }
+  }
+  var cin_pos = [];
+  for(var i = 0; i < 6; i++) {
+  	cin_pos[i] = new Array();
+    cin_pos[i][0] = new Array();
+    cin_pos[i][0][0] = 275 + (i*15);
+    cin_pos[i][0][1] = 470 - (i*8);
+    for(var j = 1; j <= 12; j++) {
+        cin_pos[i][j] = new Array();
+        cin_pos[i][j][0] = cin_pos[i][0][0] + (j*10);
+        cin_pos[i][j][1] = cin_pos[i][0][1] + (j*20);
+    }
+  }
+  var mar_pos = [];
+  for(var i = 0; i < 7; i++) {
+  	mar_pos[i] = new Array();
+    mar_pos[i][0] = new Array();
+    mar_pos[i][0][0] = 840 + (i*15);
+    mar_pos[i][0][1] = 665 - (i*8);
+    for(var j = 1; j <= 5; j++) {
+        mar_pos[i][j] = new Array();
+        mar_pos[i][j][0] = mar_pos[i][0][0] + (j*10);
+        mar_pos[i][j][1] = mar_pos[i][0][1] + (j*20);
+    }
+  }
+  var keck_pos = new Array();
+  for(var i = 0; i < 12; i++) {
+  	keck_pos[i] = new Array();
+    keck_pos[i][0] = new Array();
+    keck_pos[i][0][0] = 215 + (i*15);
+    keck_pos[i][0][1] = 205 - (i*8);
+    for(var j = 1; j <= 9; j++) {
+        keck_pos[i][j] = new Array();
+        keck_pos[i][j][0] = keck_pos[i][0][0] + (j*10);
+        keck_pos[i][j][1] = keck_pos[i][0][1] + (j*20);
+    }
+  }
+  var rosk_pos = [];
+  for(var i = 0; i < 6; i++) {
+  	rosk_pos[i] = new Array();
+    rosk_pos[i][0] = new Array();
+    rosk_pos[i][0][0] = 840 + (i*15);
+    rosk_pos[i][0][1] = 410 - (i*8);
+    for(var j = 1; j <= 9; j++) {
+        rosk_pos[i][j] = new Array();
+        rosk_pos[i][j][0] = rosk_pos[i][0][0] + (j*10);
+        rosk_pos[i][j][1] = rosk_pos[i][0][1] + (j*20);
+    }
+  }
+  var iov_pos = [];
+  for(var i = 0; i < 6; i++) {
+  	iov_pos[i] = new Array();
+    iov_pos[i][0] = new Array();
+    iov_pos[i][0][0] = 400 + (i*15);
+    iov_pos[i][0][1] = 705 - (i*8);
+    for(var j = 1; j <= 4; j++) {
+        iov_pos[i][j] = new Array();
+        iov_pos[i][j][0] = iov_pos[i][0][0] + (j*10);
+        iov_pos[i][j][1] = iov_pos[i][0][1] + (j*20);
+    }
+  }
+  var ann_pos = [];
+  for(var i = 0; i < 4; i++) {
+  	ann_pos[i] = new Array();
+    ann_pos[i][0] = new Array();
+    ann_pos[i][0][0] = 495 + (i*15);
+    ann_pos[i][0][1] = 585 - (i*8);
+    for(var j = 1; j <= 4; j++) {
+        ann_pos[i][j] = new Array();
+        ann_pos[i][j][0] = ann_pos[i][0][0] + (j*10);
+        ann_pos[i][j][1] = ann_pos[i][0][1] + (j*20);
+    }
+  }
+  var rosr_pos = [];
+  for(var i = 0; i < 5; i++) {
+  	rosr_pos[i] = new Array();
+    rosr_pos[i][0] = new Array();
+    rosr_pos[i][0][0] = 505 + (i*15);
+    rosr_pos[i][0][1] = 848 - (i*8);
+    for(var j = 1; j <= 3; j++) {
+        rosr_pos[i][j] = new Array();
+        rosr_pos[i][j][0] = rosr_pos[i][0][0] + (j*10);
+        rosr_pos[i][j][1] = rosr_pos[i][0][1] + (j*20);
+    }
+  }
+
+  /*Generate person icons regarding to students' schools*/
+  for(var i = 0; i < json_report.length; i++) {
+  		var src = document.createAttribute("src");
+  		src.value = "img/black-icon-person.png";
+        console.log(json_report[i]["name"] + ", " + json_report[i]["school"]);
+        var div = document.createElement("div")
+        var class_div = document.createAttribute("class");
+        class_div.value = "popup";
+
+        var style_div = document.createAttribute("style");
+        if(json_report[i]["school"] == "viterbi") {
+        	var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*11);
+        		y = Math.floor(Math.random()*9);
+        	} while(vite_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + vite_pos[x][y][0] + "px; left:" + vite_pos[x][y][1] + "px;";
+            vite_pos[x][y][0] = -1;
+            vite_pos[x][y][1] = -1;
+            //src.value = "img/black-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "dornsife(science)") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*6);
+        		y = Math.floor(Math.random()*9);
+        	} while(dornsci_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + dornsci_pos[x][y][0] + "px; left:" + dornsci_pos[x][y][1] + "px;";
+            dornsci_pos[x][y][0] = -1;
+            dornsci_pos[x][y][1] = -1;
+            //src.value = "img/green-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "dornsife(humanities)"){
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*11);
+        		if(x < 6) {
+        			y = Math.floor(Math.random()*5);
+        		}
+        		else {
+        			y = Math.floor(Math.random()*2);
+        		}
+        		//console.log("x : " + x + ", y : " + y);
+        	} while(dornhu_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + dornhu_pos[x][y][0] + "px; left:" + dornhu_pos[x][y][1] + "px;";
+            dornhu_pos[x][y][0] = -1;
+            dornhu_pos[x][y][1] = -1;
+            //src.value = "img/blue-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "davis") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*5);
+        		y = Math.floor(Math.random()*3);
+        	} while(dav_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + dav_pos[x][y][0] + "px; left:" + dav_pos[x][y][1] + "px;";
+            dav_pos[x][y][0] = -1;
+            dav_pos[x][y][1] = -1;
+            //src.value = "img/red-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "cinematic arts") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*5);
+        		y = Math.floor(Math.random()*12);
+        	} while(cin_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + cin_pos[x][y][0] + "px; left:" + cin_pos[x][y][1] + "px;";
+            cin_pos[x][y][0] = -1;
+            cin_pos[x][y][1] = -1;
+            //src.value = "img/purple-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "marshall" || json_report[i]["school"] == "leventhal") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*6);
+        		y = Math.floor(Math.random()*5);
+        	} while(mar_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + mar_pos[x][y][0] + "px; left:" + mar_pos[x][y][1] + "px;";
+            mar_pos[x][y][0] = -1;
+            mar_pos[x][y][1] = -1;
+            //src.value = "img/vio-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "keck") {
+        	var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*11);
+        		y = Math.floor(Math.random()*9);
+        	} while(keck_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + keck_pos[x][y][0] + "px; left:" + keck_pos[x][y][1] + "px;";
+            keck_pos[x][y][0] = -1;
+            keck_pos[x][y][1] = -1;
+            //src.value = "img/mag-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "roski" || json_report[i]["school"] == "architecture") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*5);
+        		y = Math.floor(Math.random()*9);
+        	} while(rosk_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + rosk_pos[x][y][0] + "px; left:" + rosk_pos[x][y][1] + "px;";
+            rosk_pos[x][y][0] = -1;
+            rosk_pos[x][y][1] = -1;
+            //src.value = "img/orange-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "iovine and young") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*5);
+        		y = Math.floor(Math.random()*4);
+        	} while(iov_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + iov_pos[x][y][0] + "px; left:" + iov_pos[x][y][1] + "px;";
+            iov_pos[x][y][0] = -1;
+            iov_pos[x][y][1] = -1;
+            //src.value = "img/teal-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "annenberg") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*3);
+        		y = Math.floor(Math.random()*4);
+        	} while(ann_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + ann_pos[x][y][0] + "px; left:" + ann_pos[x][y][1] + "px;";
+            ann_pos[x][y][0] = -1;
+            ann_pos[x][y][1] = -1;
+            //src.value = "img/yellow-icon-person.png";
+        }
+        else if(json_report[i]["school"] == "rossier") {
+            var x;
+        	var y;
+        	do {
+        		x = Math.floor(Math.random()*4);
+        		y = Math.floor(Math.random()*3);
+        	} while(rosr_pos[x][y][0] == -1);
+        	
+            style_div.value = "top:" + rosr_pos[x][y][0] + "px; left:" + rosr_pos[x][y][1] + "px;";
+            rosr_pos[x][y][0] = -1;
+            rosr_pos[x][y][1] = -1;
+            //src.value = "img/lime-icon-person.png";
+        }
+
+        div.setAttributeNode(class_div);
+        div.setAttributeNode(style_div);
+
+        var image = document.createElement("img");
+        var img_id = document.createAttribute("id");
+        img_id.value = i;
+        //var src = document.createAttribute("src");
+        //src.value = "img/cd-icon-person.png";
+        var event1 = document.createAttribute("onmouseover");
+        event1.value = "pop(this.id)";
+        var event2 = document.createAttribute("onmouseout");
+        event2.value = "pop(this.id)";
+        var event3 = document.createAttribute("onclick");
+        event3.value = "clickonPerson(this.id)";
+        image.setAttributeNode(img_id);
+        image.setAttributeNode(src);
+        image.setAttributeNode(event1);
+        image.setAttributeNode(event2);
+        image.setAttributeNode(event3);
+
+        /*Create a span of a popup*/
+        var span = document.createElement("span");
+        var class_span = document.createAttribute("class");
+        class_span.value = "popuptext";
+        var id_span = document.createAttribute("id");
+        id_span.value = "span" + i;
+        span.setAttributeNode(class_span);
+        span.setAttributeNode(id_span);
+        span.innerHTML = "Gender pronoun: " + json_report[i]["gender"] + "<br>" + "Name: " + json_report[i]["name"] + "<br>" + "Major: " + json_report[i]["major"] + "<br>" + "Age: " + json_report[i]["age"];
+
+        div.appendChild(image);
+        div.appendChild(span);
+
+        var element = document.getElementById("container");
+        element.appendChild(div);
+  }
+}
+
+oReq.send();
+
+function clickonPerson(id) {
+    var count = 0;
+    var url_vars = "";
+    for(var key in json_report[id])
+    {
+        if(count != 0)
+        {
+            url_vars += "&var" + count +  "=" + json_report[id][key];
+        }
+        else
+        {
+            url_vars += "var0=" + json_report[id][key];
+        }
+        count++;
+    }
+    //alert(url_vars);
+    window.location.href = "timeline.html?" + url_vars;
+}
+</script>
+
+</body>
+</html>
