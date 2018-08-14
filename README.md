@@ -4,5 +4,9 @@ This website requires at least a local host to run as we fetch the data from a l
 ```
 python -m SimpleHTTPServer 8080
 ```
+Landing page
+
+![landing page](https://github.com/chasusc/coca-introduce-us/tree/master/pictures/Landing_page.png)
+
 This project has been developed as one of the projects in a USC student organization called Corpus Callosum that aims to bridge between science, technology, and art.
 We changed all the names of the respondents to "Anonymous" for the sake of information privacy.
