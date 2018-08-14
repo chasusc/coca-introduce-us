@@ -6,7 +6,7 @@ python -m SimpleHTTPServer 8080
 ```
 Landing page
 
-![landing page](https://raw.githubusercontent.com/chasusc/coca-introduce-us/tree/master/pictures/Landing_page.png)
+![landing page](https://raw.githubusercontent.com/chasusc/coca-introduce-us/master/pictures/Landing_page.png)
 
 This project has been developed as one of the projects in a USC student organization called Corpus Callosum that aims to bridge between science, technology, and art.
 We changed all the names of the respondents to "Anonymous" for the sake of information privacy.
